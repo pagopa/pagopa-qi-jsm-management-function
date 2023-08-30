@@ -1,0 +1,33 @@
+{
+  "type":"object",
+  "properties": {
+    "code": {
+      "type": "string",
+      "enum": [
+        "TDP",
+        "TGP",
+        "TSRT",
+        "TVP",
+        "TPNP",
+        "TNSPO",
+        "TPSPO",
+        "NFER",
+        "NBI"
+      ]
+    },
+    "owner": {
+      "type": "string"
+    },
+    "threshold": {
+      "type": "integer"
+    },
+    "value": {
+      "type": "integer"
+    },
+    "triggerDate": {
+      "type": "string",
+      "format":"date-time",
+      "existingJavaType": "java.time.OffsetDateTime"
+    }
+  }
+}
