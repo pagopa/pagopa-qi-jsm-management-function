@@ -1,0 +1,8 @@
+{
+  "type":"object",
+  "properties": {
+    "details": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/pagopa-qi-alerts-management-function/PQI-40-alert-codegen/src/main/resources/schemas/events/v1/alertDetails.json"
+    }
+  }
+}
