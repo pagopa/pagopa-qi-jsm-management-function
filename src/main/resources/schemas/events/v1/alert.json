@@ -1,33 +1,8 @@
 {
   "type":"object",
   "properties": {
-    "code": {
-      "type": "string",
-      "enum": [
-        "TDP",
-        "TGP",
-        "TSRT",
-        "TVP",
-        "TPNP",
-        "TNSPO",
-        "TPSPO",
-        "NFER",
-        "NBI"
-      ]
-    },
-    "owner": {
-      "type": "string"
-    },
-    "threshold": {
-      "type": "integer"
-    },
-    "value": {
-      "type": "integer"
-    },
-    "triggerDate": {
-      "type": "string",
-      "format":"date-time",
-      "existingJavaType": "java.time.OffsetDateTime"
+    "details": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/pagopa-qi-alerts-management-function/PQI-40-alert-codegen/src/main/resources/schemas/events/v1/alertDetails.json"
     }
   }
 }
