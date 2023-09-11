@@ -4,7 +4,7 @@ microservice-chart:
   fullnameOverride: ""
   image:
     repository: ghcr.io/pagopa/pagopa-qi-jsm-management-function
-    tag: "0.0.2-2-PQI-42-update-jdk-version"
+    tag: "0.0.2-3-PQI-42-update-jdk-version"
     pullPolicy: Always
   # https://github.com/Azure/azure-functions-host/blob/prod/src/WebJobs.Script.WebHost/Controllers/HostController.cs
   livenessProbe:
