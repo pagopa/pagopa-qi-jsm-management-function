@@ -52,4 +52,6 @@ public class Info {
 		return AppInfo.builder().version(version).environment("azure-fn").name(name).build();
 	}
 
+
+
 }
