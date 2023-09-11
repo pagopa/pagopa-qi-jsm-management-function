@@ -65,6 +65,7 @@ microservice-chart:
     FUNCTIONS_WORKER_RUNTIME: "java"
   envSecret:
     APPLICATIONINSIGHTS_CONNECTION_STRING: 'ai-d-connection-string'
+    EVENTHUB_CONN_STRING: 'ehub-d-rx-qi-alert-connection-string'
   keyvault:
     name: "pagopa-d-qi-kv"
     tenantId: "7788edaf-0346-4068-9d79-c868aed15b3d"
