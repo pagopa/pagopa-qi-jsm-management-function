@@ -6,5 +6,5 @@ version: 0.5.0
 appVersion: 0.0.2-1-PQI-42-update-jdk-version
 dependencies:
   - name: microservice-chart
-    version: 1.21.0
+    version: 2.3.1
     repository: "https://pagopa.github.io/aks-microservice-chart-blueprint"
