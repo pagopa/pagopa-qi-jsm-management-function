@@ -5,14 +5,14 @@
 
     <groupId>it.pagopa.qi.jsmmanagement</groupId>
     <artifactId>pagopa-qi-jsm-management-function</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.2-4-PQI-42-update-jdk-version</version>
     <packaging>jar</packaging>
 
     <name>Azure Custom Fn</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <azure.functions.maven.plugin.version>1.15.0</azure.functions.maven.plugin.version>
         <azure.functions.java.library.version>1.4.2</azure.functions.java.library.version>
         <functionAppName>com.microsoft.azure-20220215182005862</functionAppName>
@@ -153,7 +153,7 @@
                     <region>westus</region>
                     <runtime>
                         <os>windows</os>
-                        <javaVersion>11</javaVersion>
+                        <javaVersion>17</javaVersion>
                     </runtime>
                 </configuration>
                 <executions>
