@@ -26,7 +26,8 @@ microservice-chart:
   service:
     create: true
     type: ClusterIP
-    port: 80
+    ports:
+      - 80
   ingress:
     create: true
     host: "weuprod.qi.internal.platform.pagopa.it"
