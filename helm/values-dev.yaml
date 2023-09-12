@@ -4,7 +4,7 @@ microservice-chart:
   fullnameOverride: ""
   image:
     repository: ghcr.io/pagopa/pagopa-qi-jsm-management-function
-    tag: "0.0.1-6-PQI-42-sviluppo-function-jsm-ingestion"
+    tag: "0.0.1-7-PQI-42-sviluppo-function-jsm-ingestion"
     pullPolicy: Always
   # https://github.com/Azure/azure-functions-host/blob/dev/src/WebJobs.Script.WebHost/Controllers/HostController.cs
   livenessProbe:
