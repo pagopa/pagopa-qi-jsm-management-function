@@ -65,6 +65,8 @@ microservice-chart:
     FUNCTIONS_WORKER_RUNTIME: "java"
   envSecret:
     APPLICATIONINSIGHTS_CONNECTION_STRING: 'ai-u-connection-string'
+    EVENTHUB_CONN_STRING: 'ehub-u-rx-qi-alert-connection-string'
+    AzureWebJobsStorage: 'qi-u-azurewebjobsstorage'
   keyvault:
     name: "pagopa-u-qi-kv"
     tenantId: "7788edaf-0346-4068-9d79-c868aed15b3d"

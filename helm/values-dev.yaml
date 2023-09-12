@@ -66,6 +66,7 @@ microservice-chart:
   envSecret:
     APPLICATIONINSIGHTS_CONNECTION_STRING: 'ai-d-connection-string'
     EVENTHUB_CONN_STRING: 'ehub-d-rx-qi-alert-connection-string'
+    AzureWebJobsStorage: 'qi-d-azurewebjobsstorage'
   keyvault:
     name: "pagopa-d-qi-kv"
     tenantId: "7788edaf-0346-4068-9d79-c868aed15b3d"
