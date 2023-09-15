@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 
-public class jsmIngestion {
+public class JsmIngestion {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
