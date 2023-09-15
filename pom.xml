@@ -5,7 +5,7 @@
 
     <groupId>it.pagopa.qi.jsmmanagement</groupId>
     <artifactId>pagopa-qi-jsm-management-function</artifactId>
-    <version>0.0.1-7-PQI-42-sviluppo-function-jsm-ingestion</version>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
 
     <name>Azure Custom Fn</name>
