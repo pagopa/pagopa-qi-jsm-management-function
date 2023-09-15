@@ -5,7 +5,7 @@
 
     <groupId>it.pagopa.qi.jsmmanagement</groupId>
     <artifactId>pagopa-qi-jsm-management-function</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.1-7-PQI-42-sviluppo-function-jsm-ingestion</version>
     <packaging>jar</packaging>
 
     <name>Azure Custom Fn</name>
@@ -13,8 +13,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
-        <azure.functions.maven.plugin.version>1.15.0</azure.functions.maven.plugin.version>
-        <azure.functions.java.library.version>1.4.2</azure.functions.java.library.version>
+        <azure.functions.maven.plugin.version>1.27.0</azure.functions.maven.plugin.version>
+        <azure.functions.java.library.version>3.0.0</azure.functions.java.library.version>
         <functionAppName>com.microsoft.azure-20220215182005862</functionAppName>
         <resteasy.version>3.15.3.Final</resteasy.version>
     </properties>
@@ -119,6 +119,12 @@
             <artifactId>lombok</artifactId>
             <version>1.18.20</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.10</version>
         </dependency>
 
     </dependencies>
