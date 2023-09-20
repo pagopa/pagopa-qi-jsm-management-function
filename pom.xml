@@ -19,6 +19,22 @@
         <resteasy.version>3.15.3.Final</resteasy.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>atlassian-public</id>
+            <url>https://packages.atlassian.com/maven-external/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- Start Azure -->
         <dependency>
@@ -127,6 +143,18 @@
             <version>1.2.10</version>
         </dependency>
 
+        <!-- JIRA REST JAVA CLIENT START -->
+        <dependency>
+            <groupId>com.atlassian.jira</groupId>
+            <artifactId>jira-rest-java-client-core</artifactId>
+            <version>5.2.6</version>
+        </dependency>
+        <dependency>
+            <groupId>io.atlassian.fugue</groupId>
+            <artifactId>fugue</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+        <!-- JIRA REST JAVA CLIENT END -->
     </dependencies>
 
     <build>

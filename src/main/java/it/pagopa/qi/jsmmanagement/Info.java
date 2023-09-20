@@ -1,10 +1,10 @@
-package it.gov.pagopa.qi.jsmmanagement;
+package it.pagopa.qi.jsmmanagement;
 
 import com.microsoft.azure.functions.*;
 import com.microsoft.azure.functions.annotation.AuthorizationLevel;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.HttpTrigger;
-import it.gov.pagopa.qi.jsmmanagement.model.AppInfo;
+import it.pagopa.qi.jsmmanagement.model.AppInfo;
 
 import java.io.InputStream;
 import java.util.Optional;
