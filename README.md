@@ -50,8 +50,11 @@ point_right: [guide](https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/14719
 ## JIRA integration
 
 First of all you have to be logged in with your Jira account.
-All request are made to Jira using Jira java client library.
+
 Once connected, in order to create an issue you have to retrieve request types for your project
 
-Retrieve request types: https://pagopa.atlassian.net/rest/servicedeskapi/servicedesk/PPI/requesttype
-Fields details: https://pagopa.atlassian.net/rest/servicedeskapi/servicedesk/PPI/requesttype/11030/field
+Retrieve request types: https://pagopa.atlassian.net/rest/servicedeskapi/servicedesk/<project_id>/requesttype
+
+With the above api call you can retrieve the requestTypeId for your project to set this value into configuration. 
+
+Fields details can be explored with this call: https://pagopa.atlassian.net/rest/servicedeskapi/servicedesk/<project_id>/requesttype/<request_type>/field
