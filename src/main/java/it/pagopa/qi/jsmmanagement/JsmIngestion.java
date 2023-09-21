@@ -23,13 +23,39 @@ import java.time.LocalDateTime;
 
 public class JsmIngestion {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger;
 
-    private final ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).registerModule(new JavaTimeModule());
+    private final ObjectMapper objectMapper;
 
-    private final JiraRestClientConfig jiraRestClientConfig = new JiraRestClientConfig();
+    private final JiraRestClientConfig jiraRestClientConfig;
 
-    private final JiraRestClient jiraRestClient = jiraRestClientConfig.jiraRestClient();
+    private final JiraRestClient jiraRestClient;
+
+
+    /**
+     * Default constructor
+     */
+    public JsmIngestion() {
+        this.logger = LoggerFactory.getLogger(getClass());
+        this.objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).registerModule(new JavaTimeModule());
+        this.jiraRestClientConfig = new JiraRestClientConfig();
+        this.jiraRestClient = jiraRestClientConfig.jiraRestClient();
+    }
+
+    /**
+     * Field injected constructor
+     *
+     * @param logger               - the logger instance to be used
+     * @param objectMapper         - the object mapper instance to be used
+     * @param jiraRestClientConfig - the jira rest client configuration class to be used
+     * @param jiraRestClient       - the jira rest client to be used
+     */
+    JsmIngestion(Logger logger, ObjectMapper objectMapper, JiraRestClientConfig jiraRestClientConfig, JiraRestClient jiraRestClient) {
+        this.logger = logger;
+        this.objectMapper = objectMapper;
+        this.jiraRestClientConfig = jiraRestClientConfig;
+        this.jiraRestClient = jiraRestClient;
+    }
 
     @FunctionName("EventHubQiJsmProcessor")
     public void processJsmAlert(

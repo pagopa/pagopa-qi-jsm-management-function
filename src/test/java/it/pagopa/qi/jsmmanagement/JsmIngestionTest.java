@@ -3,143 +3,104 @@ package it.pagopa.qi.jsmmanagement;
 import com.atlassian.jira.rest.client.api.IssueRestClient;
 import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.api.domain.BasicIssue;
+import com.atlassian.jira.rest.client.api.domain.IssueFieldId;
+import com.atlassian.jira.rest.client.api.domain.input.ComplexIssueInputFieldValue;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
-import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
-import com.atlassian.jira.rest.client.internal.async.DelegatingPromise;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.microsoft.azure.functions.ExecutionContext;
-import com.microsoft.azure.functions.OutputBinding;
-import io.atlassian.util.concurrent.Promise;
-import io.atlassian.util.concurrent.Promises;
+import it.pagopa.generated.qi.events.v1.Alert;
+import it.pagopa.generated.qi.events.v1.AlertDetails;
 import it.pagopa.qi.jsmmanagement.config.JiraRestClientConfig;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+import org.slf4j.LoggerFactory;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.Map;
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
-public class JsmIngestionTest {
+class JsmIngestionTest {
 
-    @Spy
-    JsmIngestion function;
+    private final ExecutionContext context = Mockito.mock(ExecutionContext.class);
 
-    @Mock
-    ExecutionContext context;
+    private final JiraRestClient jiraRestClient = Mockito.mock(JiraRestClient.class);
 
-    @Mock
-    JiraRestClient jiraRestClient;
+    private final IssueRestClient issueRestClient = Mockito.mock(IssueRestClient.class);
 
-    @Mock
-    JiraRestClientConfig jiraRestClientConfig;
+    private final io.atlassian.util.concurrent.Promise<BasicIssue> issuePromise = Mockito.mock(io.atlassian.util.concurrent.Promise.class);
 
-    @Mock
-    IssueRestClient issueRestClient;
+    private final BasicIssue basicIssue = Mockito.mock(BasicIssue.class);
+
+    private static final String JIRA_URL = "http://localhost";
+    private static final String JIRA_USERNAME = "username";
+    private static final String JIRA_TOKEN = "token";
+    private static final String JIRA_PPI_PROJECT_ID = "projectId";
+    private static final String JIRA_PPI_ISSUE_TYPE_ID = "123456";
+    private static final String ENVIRONMENT = "environment";
+
+    private static final ArgumentCaptor<IssueInput> issueInputArgumentCaptor = ArgumentCaptor.forClass(IssueInput.class);
+    private final JiraRestClientConfig jiraRestClientConfig = Mockito.spy(new JiraRestClientConfig(Map.of(
+            "JIRA_URL", JIRA_URL,
+            "JIRA_USERNAME", JIRA_USERNAME,
+            "JIRA_TOKEN", JIRA_TOKEN,
+            "JIRA_PPI_PROJECT_ID", JIRA_PPI_PROJECT_ID,
+            "JIRA_PPI_ISSUE_TYPE_ID", JIRA_PPI_ISSUE_TYPE_ID,
+            "ENVIRONMENT", ENVIRONMENT
+    )));
+
+
+    private static final ObjectMapper objectMapper = new ObjectMapper()
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .registerModule(new JavaTimeModule());
+    private final JsmIngestion function = new JsmIngestion(
+            LoggerFactory.getLogger(getClass()),
+            objectMapper,
+            jiraRestClientConfig,
+            jiraRestClient
+    );
+
 
     @Test
-    void runOk() throws URISyntaxException {
-        // setting env var
-        System.setProperty("JIRA_PPI_ISSUE_TYPE_ID", "10");
-        System.setProperty("JIRA_PPI_PROJECT_ID", "20");
+    void runOk() throws JsonProcessingException {
         // test precondition
         Logger logger = Logger.getLogger("JsmIngestion-test-logger");
-        when(context.getLogger()).thenReturn(logger);
-
-        when(jiraRestClientConfig.jiraRestClient()).thenReturn(jiraRestClient);
-        when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
-
-        String result = "testResult";
-        BasicIssue bs = new BasicIssue(new URI("bs"), "bs", 10L);
-        Promise<BasicIssue> bsp = new Promise<BasicIssue>() {
-            @Override
-            public BasicIssue claim() {
-                return bs;
-            }
-
-            @Override
-            public Promise<BasicIssue> done(Consumer<? super BasicIssue> consumer) {
-                return null;
-            }
-
-            @Override
-            public Promise<BasicIssue> fail(Consumer<Throwable> consumer) {
-                return null;
-            }
-
-            @Override
-            public Promise<BasicIssue> then(TryConsumer<? super BasicIssue> tryConsumer) {
-                return null;
-            }
-
-            @Override
-            public <B> Promise<B> map(Function<? super BasicIssue, ? extends B> function) {
-                return null;
-            }
-
-            @Override
-            public <B> Promise<B> flatMap(Function<? super BasicIssue, ? extends Promise<? extends B>> function) {
-                return null;
-            }
-
-            @Override
-            public Promise<BasicIssue> recover(Function<Throwable, ? extends BasicIssue> function) {
-                return null;
-            }
-
-            @Override
-            public <B> Promise<B> fold(Function<Throwable, ? extends B> function, Function<? super BasicIssue, ? extends B> function1) {
-                return null;
-            }
-
-            @Override
-            public boolean cancel(boolean mayInterruptIfRunning) {
-                return false;
-            }
-
-            @Override
-            public boolean isCancelled() {
-                return false;
-            }
-
-            @Override
-            public boolean isDone() {
-                return false;
-            }
-
-            @Override
-            public BasicIssue get() throws InterruptedException, ExecutionException {
-                return null;
-            }
-
-            @Override
-            public BasicIssue get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-                return null;
-            }
-        };
-        when(issueRestClient.createIssue(any(IssueInput.class))).thenReturn(bsp);
-
-        String alertMessage = "{\"details\":{\"code\":\"TGP\",\"owner\":\"ownerTest\",\"threshold\":100.0,\"value\":150.0,\"triggerDate\":\"2023-09-11T17:30:06.207757+02:00\"}}";
-
+        given(context.getLogger()).willReturn(logger);
+        given(jiraRestClientConfig.jiraRestClient()).willReturn(jiraRestClient);
+        given(jiraRestClient.getIssueClient()).willReturn(issueRestClient);
+        given(issueRestClient.createIssue(issueInputArgumentCaptor.capture())).willReturn(issuePromise);
+        given(issuePromise.claim()).willReturn(basicIssue);
+        given(basicIssue.getKey()).willReturn("issueKey");
+        String alertMessage = "{\"details\":{\"code\":\"TGP\",\"owner\":\"ownerTest\",\"threshold\":180.0,\"value\":150.0,\"triggerDate\":\"2023-09-11T17:30:06.207757+02:00\"}}";
+        Alert alert = objectMapper.readValue(alertMessage, Alert.class);
+        AlertDetails alertDetails = alert.getDetails();
+        String expectedTicketDescription = """
+                Alert details:
+                KPI code: [%s]
+                Owner: [%s]
+                Threshold: [%s]
+                Value: [%s]
+                Alert triggering date: [%s]
+                """.formatted(alertDetails.getCode(), alertDetails.getOwner(), alertDetails.getThreshold(), alertDetails.getValue(), alertDetails.getTriggerDate());
+        String expectedSummary = "[QI - pagoPA] - [environment] A new KPI TGP alert was triggered for ownerTest";
         // test execution
         function.processJsmAlert(alertMessage, context);
-
         // test assertion -> this line means the call was successful
-        assertTrue(true);
+        IssueInput createdIssue = issueInputArgumentCaptor.getValue();
+        verify(issueRestClient, times(1)).createIssue(any());
+        verify(issuePromise, times(1)).claim();
+        verify(basicIssue, times(1)).getKey();
+        assertEquals(expectedSummary, createdIssue.getField(IssueFieldId.SUMMARY_FIELD.id).getValue());
+        assertEquals(expectedTicketDescription, createdIssue.getField(IssueFieldId.DESCRIPTION_FIELD.id).getValue());
+        assertEquals(JIRA_PPI_PROJECT_ID, ((ComplexIssueInputFieldValue) createdIssue.getField(IssueFieldId.PROJECT_FIELD.id).getValue()).getValuesMap().get("key"));
+        assertEquals(JIRA_PPI_ISSUE_TYPE_ID, ((ComplexIssueInputFieldValue) createdIssue.getField(IssueFieldId.ISSUE_TYPE_FIELD.id).getValue()).getValuesMap().get("id"));
     }
 }

@@ -5,6 +5,7 @@ import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientF
 import lombok.Data;
 
 import java.net.URI;
+import java.util.Map;
 
 @Data
 public class JiraRestClientConfig {
@@ -31,6 +32,20 @@ public class JiraRestClientConfig {
         this.ppiProjectId = System.getenv("JIRA_PPI_PROJECT_ID");
         this.ppiIssueTypeId = Long.parseLong(System.getenv("JIRA_PPI_ISSUE_TYPE_ID"));
         this.environment = System.getenv("ENVIRONMENT");
+    }
+
+    /**
+     * Constructor with custom env
+     *
+     * @param env - {@link String} key-value map used to override env
+     */
+    public JiraRestClientConfig(Map<String, String> env) {
+        this.jiraUrl = env.get("JIRA_URL");
+        this.username = env.get("JIRA_USERNAME");
+        this.token = env.get("JIRA_TOKEN");
+        this.ppiProjectId = env.get("JIRA_PPI_PROJECT_ID");
+        this.ppiIssueTypeId = Long.parseLong(env.get("JIRA_PPI_ISSUE_TYPE_ID"));
+        this.environment = env.get("ENVIRONMENT");
     }
 
 
