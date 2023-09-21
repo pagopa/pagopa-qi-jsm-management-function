@@ -13,6 +13,7 @@ import com.microsoft.azure.functions.ExecutionContext;
 import com.microsoft.azure.functions.annotation.Cardinality;
 import com.microsoft.azure.functions.annotation.EventHubTrigger;
 import com.microsoft.azure.functions.annotation.FunctionName;
+import exceptions.AlertParsingException;
 import it.pagopa.generated.qi.events.v1.Alert;
 import it.pagopa.generated.qi.events.v1.AlertDetails;
 import it.pagopa.qi.jsmmanagement.config.JiraRestClientConfig;
@@ -94,6 +95,7 @@ public class JsmIngestion {
             logger.info("Ticket created with ID = {}", ticketId);
         } catch (JsonProcessingException e) {
             logger.error("Error reading value", e);
+            throw new AlertParsingException(alertBody);
         } catch (RestClientException e) {
             logger.error("Error opening ticket to JSM", e);
         }

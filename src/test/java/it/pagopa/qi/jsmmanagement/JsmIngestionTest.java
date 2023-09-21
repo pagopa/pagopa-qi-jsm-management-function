@@ -11,10 +11,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.microsoft.azure.functions.ExecutionContext;
+import exceptions.AlertParsingException;
 import io.atlassian.util.concurrent.Promise;
 import it.pagopa.generated.qi.events.v1.Alert;
 import it.pagopa.generated.qi.events.v1.AlertDetails;
 import it.pagopa.qi.jsmmanagement.config.JiraRestClientConfig;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -69,7 +71,6 @@ class JsmIngestionTest {
             jiraRestClient
     );
 
-
     @Test
     void runOk() throws JsonProcessingException {
         // test precondition
@@ -102,5 +103,12 @@ class JsmIngestionTest {
         assertEquals(expectedTicketDescription, createdIssue.getField(IssueFieldId.DESCRIPTION_FIELD.id).getValue());
         assertEquals(JIRA_PPI_PROJECT_ID, ((ComplexIssueInputFieldValue) createdIssue.getField(IssueFieldId.PROJECT_FIELD.id).getValue()).getValuesMap().get("key"));
         assertEquals(JIRA_PPI_ISSUE_TYPE_ID, ((ComplexIssueInputFieldValue) createdIssue.getField(IssueFieldId.ISSUE_TYPE_FIELD.id).getValue()).getValuesMap().get("id"));
+    }
+
+    @Test
+    void runKo() {
+        String alertMessage = "InvalidAlertValue";
+        AlertParsingException e = Assertions.assertThrows(AlertParsingException.class, () -> function.processJsmAlert(alertMessage, context));
+        assertEquals(e.getMessage(), "Invalid alert format: %s ".formatted(alertMessage));
     }
 }
