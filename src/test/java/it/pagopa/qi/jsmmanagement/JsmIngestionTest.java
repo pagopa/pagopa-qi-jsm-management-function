@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.microsoft.azure.functions.ExecutionContext;
+import io.atlassian.util.concurrent.Promise;
 import it.pagopa.generated.qi.events.v1.Alert;
 import it.pagopa.generated.qi.events.v1.AlertDetails;
 import it.pagopa.qi.jsmmanagement.config.JiraRestClientConfig;
@@ -36,7 +37,7 @@ class JsmIngestionTest {
 
     private final IssueRestClient issueRestClient = Mockito.mock(IssueRestClient.class);
 
-    private final io.atlassian.util.concurrent.Promise<BasicIssue> issuePromise = Mockito.mock(io.atlassian.util.concurrent.Promise.class);
+    private final Promise<BasicIssue> issuePromise = Mockito.mock(Promise.class);
 
     private final BasicIssue basicIssue = Mockito.mock(BasicIssue.class);
 
@@ -74,7 +75,6 @@ class JsmIngestionTest {
         // test precondition
         Logger logger = Logger.getLogger("JsmIngestion-test-logger");
         given(context.getLogger()).willReturn(logger);
-        given(jiraRestClientConfig.jiraRestClient()).willReturn(jiraRestClient);
         given(jiraRestClient.getIssueClient()).willReturn(issueRestClient);
         given(issueRestClient.createIssue(issueInputArgumentCaptor.capture())).willReturn(issuePromise);
         given(issuePromise.claim()).willReturn(basicIssue);
