@@ -1,4 +1,4 @@
-package exceptions;
+package it.pagopa.qi.jsmmanagement.exceptions;
 
 /**
  * Exception raised when the parsed string is invalid

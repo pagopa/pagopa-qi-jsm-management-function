@@ -2,6 +2,7 @@ package it.pagopa.qi.jsmmanagement;
 
 import com.atlassian.jira.rest.client.api.IssueRestClient;
 import com.atlassian.jira.rest.client.api.JiraRestClient;
+import com.atlassian.jira.rest.client.api.RestClientException;
 import com.atlassian.jira.rest.client.api.domain.BasicIssue;
 import com.atlassian.jira.rest.client.api.domain.IssueFieldId;
 import com.atlassian.jira.rest.client.api.domain.input.ComplexIssueInputFieldValue;
@@ -11,7 +12,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.microsoft.azure.functions.ExecutionContext;
-import exceptions.AlertParsingException;
+import it.pagopa.qi.jsmmanagement.exceptions.AlertParsingException;
+import it.pagopa.qi.jsmmanagement.exceptions.JiraTicketCreationException;
 import io.atlassian.util.concurrent.Promise;
 import it.pagopa.generated.qi.events.v1.Alert;
 import it.pagopa.generated.qi.events.v1.AlertDetails;
@@ -26,6 +28,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -106,7 +109,27 @@ class JsmIngestionTest {
     }
 
     @Test
-    void runKo() {
+    void shouldThrowExceptionForErrorCreatingTicketOnJira() throws JsonProcessingException {
+        // test precondition
+        Logger logger = Logger.getLogger("JsmIngestion-test-logger");
+        given(context.getLogger()).willReturn(logger);
+        given(jiraRestClient.getIssueClient()).willReturn(issueRestClient);
+        given(issueRestClient.createIssue(issueInputArgumentCaptor.capture())).willThrow(new RestClientException(new RuntimeException("Error opening ticket on Jira")));
+        String alertMessage = "{\"details\":{\"code\":\"TGP\",\"owner\":\"ownerTest\",\"threshold\":180.0,\"value\":150.0,\"triggerDate\":\"2023-09-11T17:30:06.207757+02:00\"}}";
+        Alert alert = objectMapper.readValue(alertMessage, Alert.class);
+        AlertDetails alertDetails = alert.getDetails();
+        // test execution
+        assertThrows(JiraTicketCreationException.class, () -> function.processJsmAlert(alertMessage, context));
+
+        // test assertion -> this line means the call was successful
+        IssueInput createdIssue = issueInputArgumentCaptor.getValue();
+        verify(issueRestClient, times(1)).createIssue(any());
+        verify(issuePromise, times(0)).claim();
+        verify(basicIssue, times(0)).getKey();
+    }
+
+    @Test
+    void shouldThrowExceptionForErrorParsingInputAlert() {
         String alertMessage = "InvalidAlertValue";
         AlertParsingException e = Assertions.assertThrows(AlertParsingException.class, () -> function.processJsmAlert(alertMessage, context));
         assertEquals(e.getMessage(), "Invalid alert format: %s ".formatted(alertMessage));
