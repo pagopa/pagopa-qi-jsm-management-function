@@ -1,10 +1,10 @@
-package it.gov.pagopa.qi.jsmmanagement;
+package it.pagopa.qi.jsmmanagement;
 
 import com.microsoft.azure.functions.ExecutionContext;
 import com.microsoft.azure.functions.HttpRequestMessage;
 import com.microsoft.azure.functions.HttpResponseMessage;
 import com.microsoft.azure.functions.HttpStatus;
-import it.gov.pagopa.qi.jsmmanagement.model.AppInfo;
+import it.pagopa.qi.jsmmanagement.model.AppInfo;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,4 +1,4 @@
-package it.gov.pagopa.qi.jsmmanagement.model;
+package it.pagopa.qi.jsmmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
