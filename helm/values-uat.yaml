@@ -72,9 +72,9 @@ microservice-chart:
     APPLICATIONINSIGHTS_CONNECTION_STRING: 'ai-u-connection-string'
     EVENTHUB_CONN_STRING: 'ehub-u-rx-qi-alert-connection-string'
     AzureWebJobsStorage: 'qi-u-azurewebjobsstorage'
-    JIRA_URL: 'qi-u-jira-url'
-    JIRA_USERNAME: 'qi-u-jira-username'
-    JIRA_TOKEN: 'qi-u-jira-token'
+    JIRA_URL: 'jira-url'
+    JIRA_USERNAME: 'jira-username'
+    JIRA_TOKEN: 'jira-token'
   keyvault:
     name: "pagopa-u-qi-kv"
     tenantId: "7788edaf-0346-4068-9d79-c868aed15b3d"
