@@ -4,7 +4,7 @@ microservice-chart:
   fullnameOverride: ""
   image:
     repository: ghcr.io/pagopa/pagopa-qi-jsm-management-function
-    tag: "0.2.1"
+    tag: "0.2.2"
     pullPolicy: Always
   # https://github.com/Azure/azure-functions-host/blob/prod/src/WebJobs.Script.WebHost/Controllers/HostController.cs
   livenessProbe:
@@ -96,7 +96,7 @@ microservice-chart:
             labelSelector:
               matchLabels:
                 app.kubernetes.io/instance: pagopaqijsmmanagementfunction
-            namespaces: [ "qi" ]
+            namespaces: ["qi"]
             topologyKey: topology.kubernetes.io/zone
   canaryDelivery:
     deployment:
