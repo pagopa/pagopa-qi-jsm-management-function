@@ -50,3 +50,13 @@ data "azurerm_key_vault_secret" "key_vault_integration_test_subkey" {
   name         = "integration-test-subkey"
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
+
+data "azurerm_user_assigned_identity" "workload_identity_clientid" {
+  name                = "qi-workload-identity"
+  resource_group_name = "pagopa-${var.env_short}-weu-${var.env}-aks-rg"
+}
+
+data "azurerm_user_assigned_identity" "identity_cd_01" {
+  name                = "${local.prefix}-${var.env_short}-${local.domain}-01-github-cd-identity"
+  resource_group_name = "${local.prefix}-${var.env_short}-identity-rg"
+}
