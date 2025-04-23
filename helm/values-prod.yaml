@@ -10,14 +10,14 @@ microservice-chart:
   livenessProbe:
     httpGet:
       path: /info
-      port: 80
+      port: 8080
     initialDelaySeconds: 60
     failureThreshold: 6
     periodSeconds: 10
   readinessProbe:
     httpGet:
       path: /info
-      port: 80
+      port: 8080
     initialDelaySeconds: 60
     failureThreshold: 6
     periodSeconds: 10
@@ -27,12 +27,12 @@ microservice-chart:
     create: true
     type: ClusterIP
     ports:
-      - 80
+      - 8080
   ingress:
     create: true
     host: "weuprod.qi.internal.platform.pagopa.it"
     path: /pagopa-pagopa-qi-jsm-management-function-service/(.*)
-    servicePort: 80
+    servicePort: 8080
   serviceAccount:
     create: false
     annotations: {}
@@ -63,6 +63,7 @@ microservice-chart:
           type: Utilization # Allowed types are 'Utilization' or 'AverageValue'
           value: "75"
   envConfig:
+    ASPNETCORE_URLS: "http://*:8080"
     WEBSITE_SITE_NAME: "pagopaqijsmmanagementfunction" # required to show cloud role name in application insights
     FUNCTIONS_WORKER_RUNTIME: "java"
     JIRA_PPI_PROJECT_ID: "PPI" #https://pagopa.atlassian.net/rest/api/latest/project
