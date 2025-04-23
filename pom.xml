@@ -5,7 +5,7 @@
 
     <groupId>it.pagopa.qi.jsmmanagement</groupId>
     <artifactId>pagopa-qi-jsm-management-function</artifactId>
-    <version>0.2.3-2-PIDM-481-helm-chart-update</version>
+    <version>0.2.3-3-PIDM-481-helm-chart-update</version>
     <packaging>jar</packaging>
 
     <name>Azure Custom Fn</name>
