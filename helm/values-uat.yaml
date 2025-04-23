@@ -4,7 +4,7 @@ microservice-chart:
   fullnameOverride: ""
   image:
     repository: ghcr.io/pagopa/pagopa-qi-jsm-management-function
-    tag: "0.2.3"
+    tag: "0.2.3-1-PIDM-481-helm-chart-update"
     pullPolicy: Always
   # https://github.com/Azure/azure-functions-host/blob/uat/src/WebJobs.Script.WebHost/Controllers/HostController.cs
   livenessProbe:
