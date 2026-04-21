@@ -27,10 +27,6 @@ data "azurerm_key_vault" "domain_key_vault" {
   resource_group_name = "pagopa-${var.env_short}-${local.domain}-sec-rg"
 }
 
-data "azurerm_resource_group" "apim_resource_group" {
-  name = "${local.product}-api-rg"
-}
-
 data "azurerm_key_vault_secret" "key_vault_sonar" {
   name         = "sonar-token"
   key_vault_id = data.azurerm_key_vault.key_vault.id
@@ -57,6 +53,6 @@ data "azurerm_user_assigned_identity" "workload_identity_clientid" {
 }
 
 data "azurerm_user_assigned_identity" "identity_cd_01" {
-  name                = "${local.prefix}-${var.env_short}-${local.domain}-01-github-cd-identity"
-  resource_group_name = "${local.prefix}-${var.env_short}-identity-rg"
+  name                = "${local.product}-${local.domain}-job-01-github-cd-identity"
+  resource_group_name = "${local.product}-identity-rg"
 }
