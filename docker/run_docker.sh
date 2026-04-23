@@ -56,7 +56,7 @@ cat .env | sed 's/=.*/=***/' || echo "No .env file"
 
 attempt_counter=0
 max_attempts=50
-until $(curl --output /dev/null --silent --head --fail http://localhost:8080/info); do
+until $(curl --output /dev/null --silent --fail http://localhost:8080/info); do
     if [ ${attempt_counter} -eq ${max_attempts} ];then
       echo ""
       echo "=== Max attempts reached - dumping debug info ==="
