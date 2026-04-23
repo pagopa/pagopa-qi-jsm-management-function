@@ -56,3 +56,13 @@ data "azurerm_user_assigned_identity" "identity_cd_01" {
   name                = "${local.product}-${local.domain}-job-01-github-cd-identity"
   resource_group_name = "${local.product}-identity-rg"
 }
+
+data "azurerm_key_vault_secret" "key_vault_deploy_slack_webhook" {
+  name         = "pagopa-pagamenti-deploy-slack-webhook"
+  key_vault_id = data.azurerm_key_vault.domain_key_vault.id
+}
+
+data "azurerm_key_vault_secret" "key_vault_integration_test_slack_webhook" {
+  name         = "pagopa-pagamenti-integration-test-slack-webhook"
+  key_vault_id = data.azurerm_key_vault.domain_key_vault.id
+}
