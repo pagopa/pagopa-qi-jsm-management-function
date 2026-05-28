@@ -5,7 +5,7 @@
 
     <groupId>it.pagopa.qi.jsmmanagement</groupId>
     <artifactId>pagopa-qi-jsm-management-function</artifactId>
-    <version>0.2.9</version>
+    <version>0.2.9-1-PIDM-1599-update-deploy-action</version>
     <packaging>jar</packaging>
 
     <name>Azure Custom Fn</name>
